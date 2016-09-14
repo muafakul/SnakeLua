@@ -17,44 +17,44 @@ SheetInfo.sheetSnakeBody =
         {
             --FRAME1: Snake Body horizontal
             x = 0,
-            y = 150,
-            width = 50,
-            height = 50
+            y = 0,
+            width = 32,
+            height = 32
         },
         {
             --FRAME2: Snake Body vertical
-            x = 50,
-            y = 150,
-            width = 50,
-            height = 50
+            x = 32,
+            y = 0,
+            width = 32,
+            height = 32
         },
         {
             --FRAME3: Snake Body curved LU
-            x = 0,
-            y = 50,
-            width = 50,
-            height = 50
+            x = 64,
+            y = 0,
+            width = 32,
+            height = 32
         },
         {
             --FRAME4: Snake Body curved RU
-            x = 50,
-            y = 50,
-            width = 50,
-            height = 50
+            x = 96,
+            y = 0,
+            width = 32,
+            height = 32
         },
         {
             --FRAME5: Snake Body curved LD
-            x = 100,
-            y = 50,
-            width = 50,
-            height = 50
+            x = 128,
+            y = 0,
+            width = 32,
+            height = 32
         },
         {
             --FRAME6: Snake Body curved RD
-            x = 150,
-            y = 50,
-            width = 50,
-            height = 50
+            x = 160,
+            y = 0,
+            width = 32,
+            height = 32
         }
     }
 }
@@ -65,30 +65,30 @@ SheetInfo.sheetSnakeHead ={
         {
             --FRAME1: Snake Head R
             x = 0,
-            y = 0,
-            width = 50,
-            height = 50
+            y = 32,
+            width = 32,
+            height = 32
         },
         {
             --FRAME2: Snake Head U
-            x = 50,
-            y = 0,
-            width = 50,
-            height = 50
+            x = 32,
+            y = 32,
+            width = 32,
+            height = 32
         },
         {
             --FRAME3: Snake Head L
-            x = 100,
-            y = 0,
-            width = 50,
-            height = 50
+            x = 64,
+            y = 32,
+            width = 32,
+            height = 32
         },
         {
             --FRAME4: Snake Head D
-            x = 150,
-            y = 0,
-            width = 50,
-            height = 50
+            x = 96,
+            y = 32,
+            width = 32,
+            height = 32
         }
     }
 }
@@ -99,9 +99,9 @@ SheetInfo.sheetFood ={
         {
             --FRAME1: Apple
             x = 0,
-            y = 200,
-            width = 50,
-            height = 50
+            y = 64,
+            width = 32,
+            height = 32
         }
     }
 }
