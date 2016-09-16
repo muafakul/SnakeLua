@@ -1,7 +1,4 @@
---
--- created with TexturePacker (http://www.codeandweb.com/texturepacker)
---
--- 
+
 --
 -- local sheetInfo = require("mysheet")
 -- local myImageSheet = graphics.newImageSheet( "mysheet.png", sheetInfo:getSheet() )

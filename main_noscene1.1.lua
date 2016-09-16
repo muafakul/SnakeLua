@@ -1,16 +1,30 @@
+-----------------------------------------------------------------------------------------
+--
+-- main.lua
+-- created by Fabio Roncari 21/08/2016
+--
+-----------------------------------------------------------------------------------------
+-------------
+-- OPTIONS --
+--------------
+-- Hide status bar
+display.setStatusBar( display.HiddenStatusBar )
 
-local composer = require( "composer" )
+-- Seed the random number generator
+math.randomseed( os.time( ) )
 
-local scene = composer.newScene()
+---------------
+-- VARIABLES --
+---------------
 
--- -----------------------------------------------------------------------------------
--- Code outside of the scene event functions below will only be executed ONCE unless
--- the scene is removed entirely (not recycled) via "composer.removeScene()"
--- -----------------------------------------------------------------------------------
+-- Ground (a square)
+local groundSide
+-- the grid number 
+local GRID = 12
 
----------------------------
--- LOAD IMAGE SHEET FILE -- 
----------------------------
+local gameLoopTimer
+
+-- Require the sheet info about Snake Game
 local sheetInfo = require( "spritesheet")
 
 local spriteSheetSnakeHead = graphics.newImageSheet("images/spritesheet.png", 
@@ -21,14 +35,8 @@ local spriteSheetSnakeBody = graphics.newImageSheet("images/spritesheet.png",
 
 local spriteSheetFood = graphics.newImageSheet("images/spritesheet.png", 
 	 sheetInfo:getSheetFood() )
----------------
--- VARIABLES --
----------------
+
 -- Game Objects
--- ground
-local groundContainer
-local ground
-local groundSide
 -- Apple
 local apple
 local appleGridPosition = {}
@@ -50,10 +58,6 @@ direction.UP = 1
 direction.DOWN = 2
 direction.RIGHT = 3
 direction.LEFT = 4
--- the grid number 
-local GRID = 12
--- the gameloop
-local gameLoopTimer
 
 -- GameState
 local play = false
@@ -68,24 +72,27 @@ local textDied = display.newText( "Game Over!",
 			display.contentCenterX, 20, 
 			native.systemFont , 25 )
 
--- Sound 
-local eatAppleSound
+--------------------------------------------------
+-- CREATE THE GROUND OF THE GAME                --
+-- FOR THE MOMENT A SQUARE DRAWED BY CORONA API --
+--------------------------------------------------
+if(display.contentWidth < display.contentHeight) then
+	groundSide = display.contentWidth
+else
+	groundSide = display.contentHeight
+end
+local groundContainer = display.newContainer( groundSide, 
+	groundSide )
+groundContainer.x = display.contentCenterX
+groundContainer.y = display.contentCenterY
+local ground = display.newImageRect("images/Ground.png",groundSide,
+	groundSide)
+
+groundContainer:insert( ground, true )
 
 --------------------
 -- CORE FUNCTIONS --
 --------------------
-
-----------
--- GRID --
-----------
--- set the groundSide
-local function setGroundSide()
-	if(display.contentWidth < display.contentHeight) then
-		groundSide = display.contentWidth
-	else
-		groundSide = display.contentHeight
-	end
-end
 -- Only for gebug draw the grid
 local function grid(k,l)
 local gridX = {}
@@ -109,6 +116,8 @@ local gridY = {}
 		groundContainer:insert(gridY[i])
 	end
 end
+-- draw grid
+grid(GRID,GRID)
 
 -- grid position
 local function gridPosition(i,j)
@@ -549,7 +558,6 @@ local function appleEaten()
 		and
 		snakeHeadGridPosition.j == appleGridPosition.j) then
 			count = count + 1
-			audio.play( eatAppleSound )
 			createSnakeBody()
 			destroyApple()
 			createApple()
@@ -647,7 +655,6 @@ local function isDied( )
 		for k=3,#snakeBodyTable do
 			if(snakeBodyTable[k].i == snakeHeadGridPosition.i and 
 				snakeBodyTable[k].j == snakeHeadGridPosition.j)then
-					audio.play( ouchSound )
 					died = true
 					play = false -- Stop to play
 					k= #snakeBodyTable + 1 -- Exit from the loop
@@ -694,100 +701,10 @@ local function gameLoop()
 	end	
 end
 
-
--- -----------------------------------------------------------------------------------
--- Scene event functions
--- -----------------------------------------------------------------------------------
-
--- create()
-function scene:create( event )
-
-	local sceneGroup = self.view
-	-- Code here runs when the scene is first created but has not yet appeared on screen
-	--------------------------------------------------
-	-- CREATE THE GROUND OF THE GAME                --
-	--  A SQUARE                                    --
-	--------------------------------------------------
-	--Set the side of the square
-	setGroundSide()
-	--Set the container of the game ground
-	groundContainer = display.newContainer(groundSide, groundSide )
-	sceneGroup:insert( groundContainer )
-
-	groundContainer.x = display.contentCenterX
-	groundContainer.y = display.contentCenterY
-
-	-- The ground
-	ground = display.newImageRect("images/Ground.png", 
-		groundSide, groundSide )
-	groundContainer:insert( ground, true )
-
-	-- Create the initial gameObjects
-	createSnakeHead()
-	createApple()
-
-	-- ADD THE EVENT LISTENER
-	-- Start playing when player touch on the screen
-	groundContainer:addEventListener( "tap", startPlay )
-	-- Change direction when player touch moving on the ground
-	groundContainer:addEventListener( "touch", changeDirection )
-
-	-- Load the sound
-	eatAppleSound = audio.loadSound( "audio/game/eatApple.ogg" )
-	ouchSound = audio.loadSound( "audio/game/ouch.ogg" )
-end
-
-
--- show()
-function scene:show( event )
-
-	local sceneGroup = self.view
-	local phase = event.phase
-
-	if ( phase == "will" ) then
-		-- Code here runs when the scene is still off screen (but is about to come on screen)
-
-	elseif ( phase == "did" ) then
-		-- Code here runs when the scene is entirely on screen
-		gameLoopTimer = timer.performWithDelay( 500, gameLoop , 0 )
-
-	end
-end
-
-
--- hide()
-function scene:hide( event )
-
-	local sceneGroup = self.view
-	local phase = event.phase
-
-	if ( phase == "will" ) then
-		-- Code here runs when the scene is on screen (but is about to go off screen)
-		timer.cancel( gameLoopTimer )
-	elseif ( phase == "did" ) then
-		-- Code here runs immediately after the scene goes entirely off screen
-
-	end
-end
-
-
--- destroy()
-function scene:destroy( event )
-
-	local sceneGroup = self.view
-	-- Code here runs prior to the removal of scene's view
-	audio.dispose( eatAppleSound )
-	audio.dispose( ouchSound )
-end
-
-
--- -----------------------------------------------------------------------------------
--- Scene event function listeners
--- -----------------------------------------------------------------------------------
-scene:addEventListener( "create", scene )
-scene:addEventListener( "show", scene )
-scene:addEventListener( "hide", scene )
-scene:addEventListener( "destroy", scene )
--- -----------------------------------------------------------------------------------
-
-return scene
+createSnakeHead()
+createApple()
+-- Start playing when player touch on the screen
+groundContainer:addEventListener( "tap", startPlay )
+-- Change direction when player touch moving on the ground
+groundContainer:addEventListener( "touch", changeDirection )
+gameLoopTimer = timer.performWithDelay( 500, gameLoop , 0 )

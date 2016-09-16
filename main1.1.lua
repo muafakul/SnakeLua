@@ -2,7 +2,7 @@
 --
 -- main.lua
 -- created by Fabio Roncari 14/09/2016
--- with composer for snake game
+-- with composer
 --
 -----------------------------------------------------------------------------------------
 local composer = require( "composer" )

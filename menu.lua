@@ -1,3 +1,8 @@
+--------------------------------------------
+-- Created by Fabio Roncari 16/09/2016    --
+-- Menu section of the snake game         --
+--------------------------------------------
+
 
 local composer = require( "composer" )
 
