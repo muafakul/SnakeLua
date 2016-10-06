@@ -58,15 +58,11 @@ local gameLoopTimer
 -- GameState
 local play = false
 local died = false
-
+local score = 0
 -- UI
-local textPlay = display.newText( "Tap on the screen to play", 
-			display.contentCenterX, 40, 
-			native.systemFont , 20 )
+local uiGroup
+local scoreText
 
-local textDied = display.newText( "Game Over!", 
-			display.contentCenterX, 20, 
-			native.systemFont , 25 )
 
 -- Sound 
 local eatAppleSound
@@ -74,7 +70,18 @@ local eatAppleSound
 --------------------
 -- CORE FUNCTIONS --
 --------------------
-
+--------
+-- UI --
+--------
+local function createScoreText(  )
+	scoreText = display.newText( uiGroup,
+		"Score : "..score , 
+		display.contentWidth*0.20
+		, 30 , native.systemFont ,20 )
+end
+local function updateText(  )
+	scoreText.text = "Score: "..score
+end
 ----------
 -- GRID --
 ----------
@@ -549,6 +556,8 @@ local function appleEaten()
 		and
 		snakeHeadGridPosition.j == appleGridPosition.j) then
 			count = count + 1
+			score = count * 10
+			updateText()
 			audio.play( eatAppleSound )
 			createSnakeBody()
 			destroyApple()
@@ -681,16 +690,11 @@ end
 
 local function gameLoop()
 	if(play)then
-	textPlay.isVisible = false
-	textDied.isVisible = false
 	setNewSnakeHeadGridPosition()
 	updateSnake()
 	appleEaten()
 	else
-		if(died) then
-			textDied.isVisible = true
-		end
-	 textPlay.isVisible = true
+		
 	end	
 end
 
@@ -708,6 +712,12 @@ function scene:create( event )
 	-- CREATE THE GROUND OF THE GAME                --
 	--  A SQUARE                                    --
 	--------------------------------------------------
+	--Set Background image
+	local background = display.newImageRect( sceneGroup,
+		"images/bg.png", 
+		display.contentWidth, display.viewableContentHeight )
+	background.x = display.contentCenterX
+	background.y = display.contentCenterY
 	--Set the side of the square
 	setGroundSide()
 	--Set the container of the game ground
@@ -721,6 +731,12 @@ function scene:create( event )
 	ground = display.newImageRect("images/Ground.png", 
 		groundSide, groundSide )
 	groundContainer:insert( ground, true )
+
+	-- DISPLAY SCORE
+	uiGroup = display.newGroup( )
+	sceneGroup:insert(uiGroup)
+
+	createScoreText()
 
 	-- Create the initial gameObjects
 	createSnakeHead()

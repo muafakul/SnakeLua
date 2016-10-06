@@ -7,104 +7,82 @@
 
 local SheetInfo = {}
 
-SheetInfo.sheetButtonPlay =
-{
-    frames ={
-        {
-            --FRAME1: play
-            x = 550,
-            y = 900,
-            width = 350,
-            height = 125
-        },
-        {
-            --FRAME2: play tap
-            x = 550,
-            y = 775,
-            width = 350,
-            height = 125
-        }
-    }
-}
-
-SheetInfo.sheetButtonHighscore =
-{
-    frames ={
-        {
-            --FRAME1: highscore
-            x = 0,
-            y = 125,
-            width = 700,
-            height = 125
-        },
-        {
-            --FRAME2: highscoreTap
-            x = 0,
-            y = 0,
-            width = 700,
-            height = 125
-        }
-    }
-}
-
 SheetInfo.sheetStaticElements ={
     frames = {
         {
             --FRAME1: title
             x = 0,
-            y = 250,
-            width = 600,
-            height = 175
+            y = 0,
+            width = 880,
+            height = 200
         },
 
         {
             --FRAME2: snake
             x = 0,
-            y = 425,
-            width = 550,
-            height = 600
-        }
+            y = 200,
+            width = 560,
+            height = 560
+        },
+
+        {
+            --FRAME3: how to
+            x = 560,
+            y = 200,
+            width = 160,
+            height = 160
+        },
+
+        {
+            --FRAME4: options
+            x = 720,
+            y = 200,
+            width = 160,
+            height = 160
+        },
+
+        {
+            --FRAME5: highscore
+            x = 560,
+            y = 360,
+            width = 200,
+            height = 120
+        },
+        {
+            --FRAME6: play
+            x = 560,
+            y = 480,
+            width = 200,
+            height = 120
+        },
+        {
+            --FRAME7: exit
+            x = 560,
+            y = 600,
+            width = 200,
+            height = 120
+        },
     }
 }
 
 SheetInfo.frameIndex =
 {
     -- BUTTON PLAY
-    ["play"] = 1,
-    ["playTap"] = 2,
+    ["play"] = 6,
     -- BUTTON HIGHSCORE
-    ["highscore"] = 1,
-    ["highscoreTap"] = 2,
+    ["highscore"] = 5,
     -- Static Elements
     -- TITLE
     ["title"] = 1,
     -- SNAKE 
-    ["snake"] = 2
+    ["snake"] = 2,
+    -- HOW TO
+    ["howto"] = 3,
+    -- OPTIONS
+    ["options"] = 4,
+    -- EXIT
+    ["exit"] = 7
 }
-
-SheetInfo.sequencesButtonPlay = {
-    {
-        name = "play",
-        frames = {1,2}
-    }
-}
-
-SheetInfo.sequencesButtonHighscore = {
-    {
-        name = "highscore",
-        frames = {1,2}
-    }
-}
-
-
-
-function SheetInfo:getSheetButtonPlay()
-    return self.sheetButtonPlay;
-end
-
-function SheetInfo:getSheetButtonHighscore()
-    return self.sheetButtonHighscore;
-end
 
 function SheetInfo:getSheetStaticElements()
     return self.sheetStaticElements;
@@ -112,14 +90,6 @@ end
 
 function SheetInfo:getFrameIndex(name)
     return self.frameIndex[name];
-end
-
-function SheetInfo:getSequencesButtonPlay()
-    return self.sequencesButtonPlay;
-end
-
-function SheetInfo:getSequencesButtonHighscore()
-    return self.sequencesButtonHighscore;
 end
 
 return SheetInfo

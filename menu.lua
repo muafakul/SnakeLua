@@ -86,19 +86,14 @@ function scene:create( event )
 	-- Spritesheets
 	sheetInfo = require("spritesheetMenu")
 
-	spriteSheetButtonPlay = graphics.newImageSheet("images/spritesheetMenu.png", 
-	 	sheetInfo:getSheetButtonPlay() )
-
-	spriteSheetButtonHighscore = graphics.newImageSheet("images/spritesheetMenu.png", 
-	 sheetInfo:getSheetButtonHighscore() )
-
 	spriteSheetStaticElements = graphics.newImageSheet("images/spritesheetMenu.png", 
 	 sheetInfo:getSheetStaticElements() )
 
-	backgroundColor = display.newRect( sceneGroup, 
-		display.contentCenterX, display.contentCenterY, 
-		display.contentWidth+10, display.contentHeight+10 )
-	backgroundColor:setFillColor(0.8,0.7,0.7)
+	background = display.newImageRect( sceneGroup,
+		"images/bg.png", 
+		display.contentWidth, display.viewableContentHeight )
+	background.x = display.contentCenterX
+	background.y = display.contentCenterY
 
 	-- TITLE --
 
@@ -106,52 +101,59 @@ function scene:create( event )
 		spriteSheetStaticElements, 
 		{frames={sheetInfo:getFrameIndex("title")}} )
 
-    width = display.contentWidth - 50
-	height = (width * title.height)
-		/title.width
-	title.width = width
-	title.height = height
-
 	title.x = display.contentCenterX
 	title.y = title.height * 0.5
 
 	-- BACKGROUND SNAKE HEAD
 
-	background = display.newSprite( sceneGroup,
+	backgroundSH = display.newSprite( sceneGroup,
 		spriteSheetStaticElements, 
 		{frames={sheetInfo:getFrameIndex("snake")}} )
-	local width = display.contentWidth - 50
-	local height = (width * background.height)
-		/background.width
-	background.width = width
-	background.height = height
-	background.x = display.contentCenterX
-	background.y = title.height + background.height * 0.5
-		- 25
+	backgroundSH.x = display.contentCenterX
+	backgroundSH.y = title.height + backgroundSH.height * 0.5
 
 	--MENU CHOICES
 	-- PLAY
 	local playButton = display.newSprite( sceneGroup,
-		spriteSheetButtonPlay, 
+		spriteSheetStaticElements, 
 		{frames={sheetInfo:getFrameIndex("play")}} )
-	playButton:setFillColor( 1,1,1 )
-	playButton.x = display.contentCenterX
-	playButton.y = title.height + background.height 
-	playButton.width = playButton.width * 0.3
-	playButton.height = playButton.height * 0.3
+	playButton.x = display.contentWidth - playButton.width * 0.5 - 40
+	playButton.y = display.contentHeight - playButton.height * 0.5 - 40
 	-- HIGHSCORE
-	local highScoresButton = display.newSprite( sceneGroup,
-		spriteSheetButtonHighscore, 
-		{frames={sheetInfo:getFrameIndex("highscores")}} )
-	highScoresButton:setFillColor( 1,1,1 )
-	highScoresButton.x = display.contentCenterX
-	highScoresButton.y = title.height + background.height 
-		+ playButton.height
-	highScoresButton.width = playButton.width 
-	highScoresButton.height = playButton.height 
+	local highScores = display.newSprite( sceneGroup,
+		spriteSheetStaticElements, 
+		{frames={sheetInfo:getFrameIndex("highscore")}} )
+	highScores.x = 20 + highScores.width * 0.5
+	highScores.y = title.height + 60 + highScores.height * 0.5
+	-- HIGHSCORE
+	local exit = display.newSprite( sceneGroup,
+		spriteSheetStaticElements, 
+		{frames={sheetInfo:getFrameIndex("exit")}} )
+	exit.x = highScores.x
+	exit.y = playButton.y
+	-- HOW TO
+	local howto = display.newSprite( sceneGroup,
+		spriteSheetStaticElements, 
+		{frames={sheetInfo:getFrameIndex("howto")}})
+	howto.x = playButton.x
+	howto.y = playButton.y - playButton.height * 0.5 
+			- howto.height * 0.5 - 20
+	-- OPTIONS
+	local options = display.newSprite( sceneGroup,
+		spriteSheetStaticElements, 
+		{frames={sheetInfo:getFrameIndex("options")}})
+	options.x = playButton.x
+	options.y = howto.y - howto.height * 0.5 
+			- options.height * 0.5 - 10
+
+	-- Resize options and how to
+	howto.width = howto.width * 0.8
+	howto.height = howto.height * 0.8
+	options.width = howto.width
+	options.height = howto.height
 	--EVENT LISTENERS
 	playButton:addEventListener( "tap", goToGame )
-	highScoresButton:addEventListener( "tap", goToHighScores )
+	--highScoresButton:addEventListener( "tap", goToHighScores )
 
 	-- get the parent group of title 
 	-- the same of the other objects of the menu
