@@ -47,6 +47,7 @@ local function accepted( event )
         end 
     composer.setVariable( "music", musicOptions )
     composer.setVariable( "sound", soundOptions )
+    print(json.encode( optionsTable ))
     playButtonSound()
     composer.hideOverlay(  true ,"fromLeft" , 50 )
 end
@@ -54,7 +55,7 @@ end
 local function cancelled(event)
 	local button = event.target
 	playButtonSound()
-	composer.hideOverlay(  true ,"fromLeft" , 50 )
+	composer.hideOverlay( "fromLeft" , 50 )
 end
 
 -- -----------------------------------------------------------------------------------
@@ -108,12 +109,18 @@ function scene:create( event )
 	 musicImg.height = optionsImg.height
 	 local musicButton = widget.newSwitch( 
 	 {
-	 	x = 400,
+	 	x = 450,
 	 	y = 200,
 	 	style = "checkbox",
 	 	id = "musicOptons",
 	 	initialSwitchState = musicOptions,
-	 	onPress = musicSwitched
+	 	onPress = musicSwitched, -- Event for button
+	 	-- VISUAL ELEMENTS
+	 	sheet = spriteSheetStaticElements,
+	 	frameOn = sheetInfo:getFrameIndex("checked"),
+	 	frameOff = sheetInfo:getFrameIndex("unChecked"),
+	 	width = 100,
+	 	height = 100
 	 }
 	  )	
 	 optionsGroup:insert(musicButton)
@@ -129,12 +136,18 @@ function scene:create( event )
 
 	 local soundButton = widget.newSwitch( 
 	 {
-	 	x = 400,
+	 	x = 450,
 	 	y = 360,
 	 	style = "checkbox",
 	 	id = "soundOptons",
 	 	initialSwitchState = soundOptions,
-	 	onPress = soundSwitched
+	 	onPress = soundSwitched,
+	 	-- VISUAL ELEMENTS
+	 	sheet = spriteSheetStaticElements,
+	 	frameOn = sheetInfo:getFrameIndex("checked"),
+	 	frameOff = sheetInfo:getFrameIndex("unChecked"),
+	 	width = 100,
+	 	height = 100
 	 }
 	  )	
 	 optionsGroup:insert(soundButton)

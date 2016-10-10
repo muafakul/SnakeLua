@@ -19,6 +19,7 @@ local scene = composer.newScene()
 
 -- timer variables
 local  timerUpdate -- used for the loop
+local timerMusic
 
 -- Sheet Info
 local sheetInfo 
@@ -59,6 +60,25 @@ local function randomColor()
 	local b = math.random( 0,100 ) * 0.01
 
 	title:setFillColor( r,g,b )
+end
+
+local function playOrPauseMusic()
+	optionMusic = composer.getVariable( "music" )
+	optionSound = composer.getVariable( "sound" )
+	-- Stop music if disabled
+		if(not optionMusic ) then
+			if(audio.isChannelPlaying(1)) then
+			audio.pause( 1 )
+			end
+		else
+			if(audio.isChannelActive(1)) then
+				if(audio.isChannelPaused(1)) then
+					audio.resume( 1 )
+				end
+			else
+				audio.play( musicTrack , {channel = 1, loops = -1} )
+			end
+		end
 end
 
 local  function goToGame( event )
@@ -199,15 +219,7 @@ function scene:show( event )
 		-- Code here runs when the scene is entirely on screen
 		timerUpdate = timer.performWithDelay( 800, randomColor , 0 )
 		-- title:setFillColor( r,g,b )
-
-		-- Start the music
-		if(optionMusic ) then
-			audio.play( musicTrack , {channel = 1, loops = -1} )
-		end
-		-- Stop music if disabled
-		if(not optionMusic ) then
-			audio.stop( 1 )
-		end
+		timerMusic = timer.performWithDelay( 100, playOrPauseMusic , 0 )
 	end
 end
 
