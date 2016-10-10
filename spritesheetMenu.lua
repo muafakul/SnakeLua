@@ -46,22 +46,71 @@ SheetInfo.sheetStaticElements ={
             x = 560,
             y = 360,
             width = 200,
-            height = 120
+            height = 118
         },
         {
             --FRAME6: play
-            x = 560,
+            x = 720,
             y = 480,
-            width = 200,
-            height = 120
+            width = 160,
+            height = 160
         },
         {
             --FRAME7: exit
             x = 560,
-            y = 600,
-            width = 200,
-            height = 120
+            y = 480,
+            width = 160,
+            height = 160
         },
+        {
+            --FRAME8: ok
+            x = 880,
+            y = 0,
+            width = 160,
+            height = 160
+        },
+        {
+            --FRAME9: music
+            x = 1040,
+            y = 0,
+            width = 160,
+            height = 160
+        },
+        {
+            --FRAME10: pause
+            x = 880,
+            y = 160,
+            width = 160,
+            height = 160
+        },
+        {
+            --FRAME11: sound
+            x = 880,
+            y = 320,
+            width = 160,
+            height = 160
+        },
+        {
+            --FRAME12: cancel
+            x = 880,
+            y = 480,
+            width = 160,
+            height = 160
+        },
+        {
+            --FRAME13: checked
+            x = 560,
+            y = 640,
+            width = 100,
+            height = 100
+        },
+        {
+            --FRAME14: unChecked
+            x = 660,
+            y = 640,
+            width = 100,
+            height = 100
+        }
     }
 }
 
@@ -81,7 +130,15 @@ SheetInfo.frameIndex =
     -- OPTIONS
     ["options"] = 4,
     -- EXIT
-    ["exit"] = 7
+    ["exit"] = 7,
+
+    ["ok"] = 8,
+    ["music"] = 9,
+    ["pause"] = 10,
+    ["sound"] = 11,
+    ["cancel"] = 12,
+    ["checked"] = 13,
+    ["unChecked"] = 14
 }
 
 function SheetInfo:getSheetStaticElements()

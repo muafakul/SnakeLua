@@ -65,6 +65,7 @@ local scoreText
 
 
 -- Sound 
+local optionSound = composer.getVariable( "sound" )
 local eatAppleSound
 
 --------------------
@@ -558,7 +559,9 @@ local function appleEaten()
 			count = count + 1
 			score = count * 10
 			updateText()
+			if(optionSound == 1)then
 			audio.play( eatAppleSound )
+			end
 			createSnakeBody()
 			destroyApple()
 			createApple()
@@ -656,7 +659,9 @@ local function isDied( )
 		for k=3,#snakeBodyTable do
 			if(snakeBodyTable[k].i == snakeHeadGridPosition.i and 
 				snakeBodyTable[k].j == snakeHeadGridPosition.j)then
+					if(optionSound == 1) then
 					audio.play( ouchSound )
+					end
 					died = true
 					play = false -- Stop to play
 					k= #snakeBodyTable + 1 -- Exit from the loop

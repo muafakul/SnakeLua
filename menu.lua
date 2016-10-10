@@ -32,9 +32,11 @@ local backgroundColor
 local background
 
 -- Sound
+local optionSound = composer.getVariable( "sound" )
 local buttonSound
 
 -- MusicTrack
+local optionMusic = composer.getVariable( "music" )
 local musicTrack
 
 -------------------
@@ -45,6 +47,12 @@ local musicTrack
 ---------------
 -- FUNCTIONS --
 ---------------
+local function playButtonSound( )
+	if(optionSound) then
+		audio.play( buttonSound )	
+	end
+end
+
 local function randomColor()
 	local r = math.random( 0,100 ) * 0.01
 	local g = math.random( 0,100 ) * 0.01
@@ -53,23 +61,30 @@ local function randomColor()
 	title:setFillColor( r,g,b )
 end
 
-
 local  function goToGame( event )
 	local button = event.target
 	button:setFillColor( 0.85, 0.75 ,0.5 )
-	audio.play( buttonSound )
+	playButtonSound( )
 	composer.removeScene( "game" )
 	composer.gotoScene( "game" ,{time=800, effect="crossFade"} )
 end
 
-local function goToHighScores( event )
+local function exitApp( event )
 	local button = event.target
 	button:setFillColor( 0.85, 0.75 ,0.5 )
-	audio.play( buttonSound )
-	composer.removeScene( "highscores" )
-	composer.gotoScene( "highscores" )
+	playButtonSound()
+	native.requestExit( )
 end
 
+local function optionsSet (event)
+	local options = {
+    effect = "fromRight",
+    time = 50,
+    isModal = true
+}
+	playButtonSound()
+	composer.showOverlay( "options", options )
+end
 
 
 
@@ -125,7 +140,7 @@ function scene:create( event )
 		{frames={sheetInfo:getFrameIndex("highscore")}} )
 	highScores.x = 20 + highScores.width * 0.5
 	highScores.y = title.height + 60 + highScores.height * 0.5
-	-- HIGHSCORE
+	-- EXIT
 	local exit = display.newSprite( sceneGroup,
 		spriteSheetStaticElements, 
 		{frames={sheetInfo:getFrameIndex("exit")}} )
@@ -153,6 +168,8 @@ function scene:create( event )
 	options.height = howto.height
 	--EVENT LISTENERS
 	playButton:addEventListener( "tap", goToGame )
+	options:addEventListener( "tap", optionsSet )
+	exit:addEventListener( "tap", exitApp )
 	--highScoresButton:addEventListener( "tap", goToHighScores )
 
 	-- get the parent group of title 
@@ -163,7 +180,7 @@ function scene:create( event )
 
 	-- LOAD SOUND OBJECTS
 	buttonSound = audio.loadSound( "audio/menu/button.ogg" )
-
+	composer.setVariable( "buttonSound", buttonSound )
 	musicTrack = audio.loadStream( "audio/music/AnAdventureAwaits.ogg" )
 
 end
@@ -184,7 +201,13 @@ function scene:show( event )
 		-- title:setFillColor( r,g,b )
 
 		-- Start the music
-		audio.play( musicTrack , {channel = 1, loops = -1} )
+		if(optionMusic ) then
+			audio.play( musicTrack , {channel = 1, loops = -1} )
+		end
+		-- Stop music if disabled
+		if(not optionMusic ) then
+			audio.stop( 1 )
+		end
 	end
 end
 
